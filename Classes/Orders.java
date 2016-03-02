@@ -42,7 +42,7 @@ public class Orders {
 
     public boolean removeAllCarriedOutOrders() {
         for (int i=0; i < size; i++) {
-            elementDarta
+            elementData[i] = null;
         }
         size = 0;
     }

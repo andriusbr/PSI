@@ -20,15 +20,18 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
-public class LoginActivity extends AppCompatActivity {
+/**
+ * Created by Andrius on 2016-02-21.
+ */
+public class ChangePasswordActivity extends AppCompatActivity {
 
-    private EditText user, pass;
-    private Button buttonLogin;
+    private EditText password, newPassword1, newPassword2;
+    private Button buttonChange;
     // Progress Dialog
     private ProgressDialog pDialog;
     // JSON parser class
     JSONParser jsonParser = new JSONParser();
-    private static final String LOGIN_URL = "http://kurjeriu-programele.netne.net/login.php";
+    private static final String LOGIN_URL = "http://kurjeriu-programele.netne.net/change_password.php";
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_MESSAGE = "message";
 
@@ -36,13 +39,14 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_change_password);
 
-        buttonLogin=(Button)findViewById(R.id.button_sign_in);
-        user=(EditText)findViewById(R.id.edit_text_username);
-        pass=(EditText)findViewById(R.id.edit_text_password);
+        buttonChange=(Button)findViewById(R.id.button_change_password_confirm);
+        password=(EditText)findViewById(R.id.edit_text_old_password);
+        newPassword1=(EditText)findViewById(R.id.edit_text_new_password1);
+        newPassword2=(EditText)findViewById(R.id.edit_text_new_password2);
 
-        pass.setOnKeyListener(new View.OnKeyListener() {
+        newPassword2.setOnKeyListener(new View.OnKeyListener() {
             public boolean onKey(View view, int keyCode, KeyEvent keyevent) {
                 //If the keyevent is a key-down event on the "enter" button
                 if ((keyevent.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
@@ -53,12 +57,11 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        buttonLogin.setOnClickListener(new View.OnClickListener() {
+        buttonChange.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
                 buttonClickActions();
-
             }
         });
 
@@ -66,11 +69,20 @@ public class LoginActivity extends AppCompatActivity {
 
     private void buttonClickActions(){
         if(isNetworkAvailable()) {
-            String username = user.getText().toString();
-            String password = pass.getText().toString();
-            new AttemptLogin().execute(username, password);
+            String oldPass = password.getText().toString();
+            String newPass1 = newPassword1.getText().toString();
+            String newPass2 = newPassword2.getText().toString();
+            if(newPass1.equals(newPass2) && newPass1.length()>=5) {
+                new AttemptChangePassword().execute(getUsername(), oldPass, newPass1);
+            }else if(oldPass.equals("") || newPass1.equals("") || newPass2.equals("")) {
+                Toast.makeText(ChangePasswordActivity.this, "One or more fields are empty.", Toast.LENGTH_LONG).show();
+            }else if(!newPass1.equals(newPass2)){
+                Toast.makeText(ChangePasswordActivity.this, "Passwords don't match", Toast.LENGTH_LONG).show();
+            }else if(newPass1.length()<5){
+                Toast.makeText(ChangePasswordActivity.this, "Password must be 5 characters or longer", Toast.LENGTH_LONG).show();
+            }
         }else{
-            Toast.makeText(LoginActivity.this, "No Internet Connection", Toast.LENGTH_LONG).show();
+            Toast.makeText(ChangePasswordActivity.this, "No Internet Connection", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -82,8 +94,23 @@ public class LoginActivity extends AppCompatActivity {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
+    private String getUsername() {
+        String username;
+        Bundle extras = getIntent().getExtras();
+        if(extras == null) {
+            username = "";
+        } else {
+            username = extras.getString("username");
+        }
+        return username;
+    }
 
-    class AttemptLogin extends AsyncTask<String, String, String> {
+
+
+
+
+
+    class AttemptChangePassword extends AsyncTask<String, String, String> {
         /**
          * Before starting background thread Show Progress Dialog
          */
@@ -92,8 +119,8 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pDialog = new ProgressDialog(LoginActivity.this);
-            pDialog.setMessage("Attempting for login...");
+            pDialog = new ProgressDialog(ChangePasswordActivity.this);
+            pDialog.setMessage("Changing password...");
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(true);
             pDialog.show();
@@ -108,7 +135,8 @@ public class LoginActivity extends AppCompatActivity {
 
                 HashMap<String, String> params = new HashMap<>();
                 params.put("username", args[0]);
-                params.put("password", args[1]);
+                params.put("old_password", args[1]);
+                params.put("new_password", args[2]);
 
                 Log.d("request!", "starting");
 
@@ -117,24 +145,14 @@ public class LoginActivity extends AppCompatActivity {
 
                 if(json!=null) {
                     // checking  log for json response
-                    Log.d("Login attempt", json.toString());
+                    Log.d("Change password attempt", json.toString());
 
                     // success tag for json
                     success = json.getInt(TAG_SUCCESS);
                     if (success == 1) {
-                        Log.d("Successfully Login!", json.toString());
+                        Log.d("Password changed!", json.toString());
 
-                        Intent ii = new Intent(LoginActivity.this, UserInterfaceActivity.class);
-                        ii.putExtra("username", args[0]);
-                        finish();
-                        // this finish() method is used to tell android os that we are done with current //activity now! Moving to other activity
-                        startActivity(ii);
-                        return json.getString(TAG_MESSAGE);
-                    }else if (success == 2) {
-                        Log.d("Successfully Login!", json.toString());
-
-                        Intent ii = new Intent(LoginActivity.this, AdminInterfaceActivity.class);
-                        ii.putExtra("username", args[0]);
+                        Intent ii = new Intent(ChangePasswordActivity.this, UserInterfaceActivity.class);
                         finish();
                         // this finish() method is used to tell android os that we are done with current //activity now! Moving to other activity
                         startActivity(ii);
@@ -157,10 +175,30 @@ public class LoginActivity extends AppCompatActivity {
 
             pDialog.dismiss();
             if (message != null) {
-                Toast.makeText(LoginActivity.this, message, Toast.LENGTH_LONG).show();
+                Toast.makeText(ChangePasswordActivity.this, message, Toast.LENGTH_LONG).show();
             }
         }
     }
 
+    @Override
+    public void onBackPressed() {
 
+        Bundle extras = getIntent().getExtras();
+        if(extras == null) {
+            Intent i=new Intent(ChangePasswordActivity.this, UserInterfaceActivity.class);
+            finish();
+            startActivity(i);
+        } else {
+            boolean isAdmin=extras.getBoolean("isAdmin");
+            if(isAdmin){
+                Intent i=new Intent(ChangePasswordActivity.this, AdminInterfaceActivity.class);
+                finish();
+                startActivity(i);
+            }else{
+                Intent i=new Intent(ChangePasswordActivity.this, UserInterfaceActivity.class);
+                finish();
+                startActivity(i);
+            }
+        }
     }
+}

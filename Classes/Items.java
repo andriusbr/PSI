@@ -1,3 +1,5 @@
+package com.example.andrius.kurjeriuapp.Classes;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -5,14 +7,16 @@ import java.util.List;
  */
 public class Items {
 
-    private List<Item> items = new List<Item>;
-    private List<int> ids = new List<int>;
-    private int currentId;
+    private List<Item> items = new ArrayList<Item>();
+    private List<Integer> ids = new ArrayList<Integer>();
 
     public Items () {}
 
     public Items (List<Item> items) {
         this.items = items;
+        for (int i=0;i<items.size();i++){
+            ids.add(items.get(i).getId());
+        }
     }
 
     public Item get (int i) {
@@ -20,7 +24,8 @@ public class Items {
     }
 
     public void add (Item item) {
-        this.items.add(item);
+        item.setId(generateID());
+        items.add(item);
     }
 
     public boolean isEmpty () {
@@ -32,22 +37,19 @@ public class Items {
     }
 
     public int generateID () {
-
+        if(ids.isEmpty()){
+            return 0;
+        }
+        int lastID=ids.get(ids.size()-1);
+        int newID=lastID+1;
+        while(!containsId(newID)){
+            newID++;
+        }
+        ids.add(newID);
+        return newID;
     }
 
     public boolean containsId (int id) {
-        return items.contains();
+        return ids.contains(id);
     }
-    /*-items : List<Item>
--ids : List<Integer>
--currentId : integer
-+Items()
-+Item(items : List<Item>)
-+get(i : integer) : Item
-+add(item : Item) : void
-+isEmpty() : boolean
-+contains(item : Item) : boolean
--generateId() : integer
--containsId(id : integer) : boolean
-*/
 }

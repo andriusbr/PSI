@@ -1,3 +1,5 @@
+package com.example.andrius.kurjeriuapp.Classes;
+
 /**
  * Created by Tautvydas on 2016-02-14.
  */
@@ -36,6 +38,10 @@ public class Item {
 
     public int getId () {
         return this.id;
+    }
+
+    public void setId(int id){
+        this.id=id;
     }
 
 }

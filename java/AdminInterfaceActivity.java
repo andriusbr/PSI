@@ -22,9 +22,8 @@ public class AdminInterfaceActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View arg0) {
-                //TODO
-                //Intent i = new Intent(AdminInterfaceActivity.this, Map.class);
-                //startActivity(i);
+                Intent i = new Intent(AdminInterfaceActivity.this, ManageCouriers.class);
+                startActivity(i);
             }
         });
 

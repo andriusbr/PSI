@@ -27,6 +27,16 @@ public class AdminInterfaceActivity extends AppCompatActivity {
             }
         });
 
+        Button ordersButton=(Button)findViewById(R.id.button_admin_orders);
+        ordersButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                Intent i=new Intent(AdminInterfaceActivity.this, OrdersAdminActivity.class);
+                startActivity(i);
+            }
+        });
+
         Button changePasswordButton=(Button)findViewById(R.id.button_admin_change_password);
         changePasswordButton.setOnClickListener(new View.OnClickListener() {
 

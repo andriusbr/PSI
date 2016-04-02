@@ -104,7 +104,7 @@ public class ManageCouriers extends AppCompatActivity {
 
     private void setupListView(){
         final ListView usersListView = (ListView) findViewById(R.id.list_users);
-        final ListAdapter customAdapter = new ListAdapter(this, R.layout.row_layout_manage_users, couriers.getList());
+        final ListManageCouriersAdapter customAdapter = new ListManageCouriersAdapter(this, R.layout.row_layout_manage_users, couriers.getList());
         runOnUiThread(new Runnable() {
                           @Override
                           public void run() {

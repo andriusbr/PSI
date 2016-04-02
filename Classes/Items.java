@@ -49,6 +49,8 @@ public class Items {
         return newID;
     }
 
+    public int getSize(){return items.size();}
+
     public boolean containsId (int id) {
         return ids.contains(id);
     }

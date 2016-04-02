@@ -24,8 +24,12 @@ public class Orders {
         return orders.get(i);
     }
 
+    public List<Order> getList(){return orders;}
+
     public void add(Order order) {
-        order.setId(generateID());
+        if(order.getId() < 0) {
+            order.setId(generateID());
+        }
         orders.add(order);
     }
 

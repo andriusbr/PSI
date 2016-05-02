@@ -24,6 +24,7 @@ public class UserInterfaceActivity extends AppCompatActivity {
             @Override
             public void onClick(View arg0) {
                 Intent i = new Intent(UserInterfaceActivity.this, Map.class);
+                i.putExtra("username",getUsername());
                 startActivity(i);
             }
         });
@@ -62,6 +63,17 @@ public class UserInterfaceActivity extends AppCompatActivity {
             username = extras.getString("username");
         }
         return username;
+    }
+
+    private int getId(){
+        int id;
+        Bundle extras = getIntent().getExtras();
+        if(extras == null) {
+            id = -1;
+        } else {
+            id = extras.getInt("id");
+        }
+        return id;
     }
 
     private void setLoggedInMessage(){

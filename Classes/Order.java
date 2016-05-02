@@ -34,11 +34,12 @@ public class Order {
         this.couriers_username = couriers_username;
     }
     
-    public Order(int id ,String address, Items items, String firstName, String lastName)
+    public Order(int id ,String address, Items items, double price, String firstName, String lastName)
     {
         this.id = id;
         this.address = address;
         this.items = items;
+        this.price = price;
         this.personsFirstName = firstName;
         this.personsLastName = lastName;
     }

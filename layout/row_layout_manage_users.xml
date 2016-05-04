@@ -18,40 +18,35 @@
             android:layout_weight="0.1"
             android:textSize="12sp"
             android:textColor="#000000"
-            android:id="@+id/row_id"
-            android:text="@string/add"/>
+            android:id="@+id/row_id" />
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.2"
             android:textSize="12sp"
             android:textColor="#000000"
-            android:id="@+id/row_username"
-            android:text="@string/add"/>
+            android:id="@+id/row_username" />
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.2"
             android:textSize="12sp"
             android:textColor="#000000"
-            android:id="@+id/row_password"
-            android:text="@string/add"/>
+            android:id="@+id/row_password" />
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.2"
             android:textSize="12sp"
             android:textColor="#000000"
-            android:id="@+id/row_first_name"
-            android:text="@string/add"/>
+            android:id="@+id/row_first_name" />
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.2"
             android:textSize="12sp"
             android:textColor="#000000"
-            android:id="@+id/row_last_name"
-            android:text="@string/add"/>
+            android:id="@+id/row_last_name" />
         <Button
             android:layout_width="0dp"
             android:layout_height="30sp"

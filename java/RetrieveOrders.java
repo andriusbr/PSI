@@ -162,7 +162,7 @@ public class RetrieveOrders {
         protected void onPreExecute() {
             super.onPreExecute();
             pDialog = new ProgressDialog(context);
-            pDialog.setMessage("Retrieving data...");
+            pDialog.setMessage("Loading...");
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(true);
             pDialog.show();

@@ -24,6 +24,17 @@ public class UserInterfaceActivity extends AppCompatActivity {
             @Override
             public void onClick(View arg0) {
                 Intent i = new Intent(UserInterfaceActivity.this, Map.class);
+                i.putExtra("username", getUsername());
+                startActivity(i);
+            }
+        });
+
+        Button ordersButton=(Button)findViewById(R.id.button_orders);
+        ordersButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                Intent i = new Intent(UserInterfaceActivity.this, OrdersCourierActivity.class);
                 i.putExtra("username",getUsername());
                 startActivity(i);
             }

@@ -50,6 +50,7 @@ public class Order {
     public String getFirstName() { return personsFirstName;}
     public String getLastName() { return personsLastName;}
     public String getCourier(){return couriers_username;}
+    public double getPrice(){return price;}
     public boolean isCarriedOut() { return carriedOut;}
     
     public void setId(int id){ this.id=id; }

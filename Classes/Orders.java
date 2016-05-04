@@ -1,5 +1,6 @@
 package com.example.andrius.kurjeriuapp.Classes;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -8,8 +9,8 @@ import java.util.List;
 
 public class Orders {
 
-    private List<Order> orders = new ArrayList<Order>();
-    private List<Integer> ids = new ArrayList<Integer>();
+    private List<Order> orders = new LinkedList<Order>();
+    private List<Integer> ids = new LinkedList<Integer>();
 
     public Orders() { }
 
@@ -31,6 +32,13 @@ public class Orders {
             order.setId(generateID());
         }
         orders.add(order);
+    }
+
+    public void add(int i, Order order) {
+        if(order.getId() < 0) {
+            order.setId(generateID());
+        }
+        orders.add(i, order);
     }
 
     public boolean isEmpty() {

@@ -41,8 +41,12 @@
       $response["message"] = " Error retrieving data ";
       die(json_encode($response));
     }
-    $courier = mysql_result($result,0);
+    $courier = "-";
+    if (mysql_num_rows($result) > 0) { 
+      $courier = mysql_result($result,0);
+    }
     array_push($couriers, $courier);
+    
 
 
     $sql3 = "SELECT product_name FROM products WHERE order_id = '$id'";

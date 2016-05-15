@@ -33,6 +33,7 @@ public class OrdersAdminActivity extends AppCompatActivity {
     // JSON parser class
     JSONParser jsonParser = new JSONParser();
     private static final String LOGIN_URL_LIST = "http://kurjeriu-programele.netne.net/get_order_list.php";
+    private static final String CONNECTION_URL = "http://kurjeriu-programele.netne.net/generate_orders.php";
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_MESSAGE = "message";
     private static final String TAG_IDS="ids";
@@ -56,7 +57,7 @@ public class OrdersAdminActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View arg0) {
-                //TODO
+                new GenerateOrdersAttempt().execute();
             }
         });
 
@@ -207,6 +208,66 @@ public class OrdersAdminActivity extends AppCompatActivity {
                         return json.getString(TAG_MESSAGE);
                     } else {
                         Log.d("Error loading data", json.toString());
+                        return json.getString(TAG_MESSAGE);
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        /**
+         * Once the background process is done we need to  Dismiss the progress dialog asap
+         **/
+        protected void onPostExecute(String message) {
+
+            pDialog.dismiss();
+        }
+    }
+
+
+    class GenerateOrdersAttempt extends AsyncTask<String, String, String> {
+        /**
+         * Before starting background thread Show Progress Dialog
+         */
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(OrdersAdminActivity.this);
+            pDialog.setMessage("Loading...");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(true);
+            pDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(String... args) {
+            int success;
+            try {
+                Log.d("request!", "starting");
+
+                JSONObject json = jsonParser.makeHttpRequest(
+                        CONNECTION_URL, null);
+
+                if (json != null) {
+                    // checking  log for json response
+                    Log.d("Attempting to generate", json.toString());
+
+                    // success tag for json
+                    success = json.getInt(TAG_SUCCESS);
+                    if (success == 1) {
+
+                        Intent intent = getIntent();
+                        finish();
+                        startActivity(intent);
+
+                        Log.d("Success!", json.toString());
+                        return json.getString(TAG_MESSAGE);
+                    } else {
+                        Log.d("Error generating orders", json.toString());
                         return json.getString(TAG_MESSAGE);
                     }
                 }

@@ -1,10 +1,14 @@
 package com.example.andrius.kurjeriuapp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 /**
  * Created by Andrius on 2016-02-21.
@@ -22,8 +26,12 @@ public class AdminInterfaceActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View arg0) {
-                Intent i = new Intent(AdminInterfaceActivity.this, ManageCouriers.class);
-                startActivity(i);
+                if(isNetworkAvailable()) {
+                    Intent i = new Intent(AdminInterfaceActivity.this, ManageCouriers.class);
+                    startActivity(i);
+                }else{
+                    Toast.makeText(AdminInterfaceActivity.this, "No Internet Connection", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -32,8 +40,12 @@ public class AdminInterfaceActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View arg0) {
-                Intent i=new Intent(AdminInterfaceActivity.this, OrdersAdminActivity.class);
-                startActivity(i);
+                if(isNetworkAvailable()) {
+                    Intent i = new Intent(AdminInterfaceActivity.this, OrdersAdminActivity.class);
+                    startActivity(i);
+                }else{
+                    Toast.makeText(AdminInterfaceActivity.this, "No Internet Connection", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -71,5 +83,12 @@ public class AdminInterfaceActivity extends AppCompatActivity {
             username = extras.getString("username");
         }
         return username;
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }

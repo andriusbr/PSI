@@ -9,7 +9,7 @@
   
   $id=$_POST["id"];
    
-  $sql = "DELETE FROM courier_login WHERE id='$id'";
+  $sql = "DELETE FROM `order` WHERE id='$id'";
 
   $retval = mysql_query( $sql, $conn );
   if(! $retval ) {
@@ -18,7 +18,7 @@
     die(json_encode($response));
   }else{
     $response["success"] = 1;
-    $response["message"] = " User deleted succesfully ";
+    $response["message"] = " Order deleted succesfully ";
     die(json_encode($response));
   }
   

@@ -41,6 +41,8 @@ public class Orders {
         orders.add(i, order);
     }
 
+    public int size(){return orders.size();}
+
     public boolean isEmpty() {
         return orders.isEmpty();
     }
